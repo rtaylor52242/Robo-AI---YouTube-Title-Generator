@@ -1,0 +1,5 @@
+{
+  "name": "Robo AI - YouTube Title Generator",
+  "description": "An application that uses AI to generate several non-clickbait title options for your YouTube video idea, based on successful examples.",
+  "requestFramePermissions": []
+}
