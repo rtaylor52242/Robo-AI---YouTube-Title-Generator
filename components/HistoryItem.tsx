@@ -1,14 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { ChosenTitle } from '../App';
+import CtrScore from './CtrScore';
 
 interface HistoryItemProps {
-  item: { id: string; text: string };
+  item: ChosenTitle;
+  index: number;
   onUpdate: (id: string, newText: string) => void;
   onDelete: (id: string) => void;
+  onShare: () => void;
 }
 
-const HistoryItem: React.FC<HistoryItemProps> = ({ item, onUpdate, onDelete }) => {
+const HistoryItem: React.FC<HistoryItemProps> = ({ item, index, onUpdate, onDelete, onShare }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [editText, setEditText] = useState(item.text);
+  const [editText, setEditText] = useState(item.title);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -19,14 +23,14 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ item, onUpdate, onDelete }) =
   }, [isEditing]);
 
   const handleSave = () => {
-    if (editText.trim() && editText.trim() !== item.text) {
+    if (editText.trim() && editText.trim() !== item.title) {
       onUpdate(item.id, editText.trim());
     }
     setIsEditing(false);
   };
   
   const handleCancel = () => {
-    setEditText(item.text);
+    setEditText(item.title);
     setIsEditing(false);
   };
 
@@ -39,20 +43,27 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ item, onUpdate, onDelete }) =
   };
 
   return (
-    <div className="bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg p-4 flex justify-between items-center transition-all duration-300 hover:shadow-md">
-      {isEditing ? (
-        <input
-          ref={inputRef}
-          type="text"
-          value={editText}
-          onChange={(e) => setEditText(e.target.value)}
-          onKeyDown={handleKeyDown}
-          onBlur={handleCancel}
-          className="flex-grow bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100 p-2 rounded-md mr-4 focus:ring-2 focus:ring-indigo-500 outline-none"
-        />
-      ) : (
-        <p className="text-slate-700 dark:text-slate-200 font-medium flex-1 pr-4">{item.text}</p>
-      )}
+    <div className="bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg p-4 flex items-center gap-4 transition-all duration-300 hover:shadow-md">
+      <div className="flex-shrink-0 flex items-center gap-4">
+        <span className="text-xl font-bold text-slate-400 dark:text-slate-500 w-6 text-center">{index + 1}.</span>
+        <CtrScore score={item.ctrScore} />
+      </div>
+      <div className="flex-grow min-w-0">
+        {isEditing ? (
+          <input
+            ref={inputRef}
+            type="text"
+            value={editText}
+            onChange={(e) => setEditText(e.target.value)}
+            onKeyDown={handleKeyDown}
+            onBlur={handleCancel}
+            className="w-full bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100 p-2 rounded-md focus:ring-2 focus:ring-indigo-500 outline-none"
+          />
+        ) : (
+          <p className="text-slate-800 dark:text-slate-200 font-semibold text-lg">{item.title}</p>
+        )}
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 italic">"{item.description}"</p>
+      </div>
       <div className="flex items-center space-x-2 flex-shrink-0">
         {isEditing ? (
           <>
@@ -69,6 +80,15 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ item, onUpdate, onDelete }) =
           </>
         ) : (
           <>
+            <button
+              onClick={onShare}
+              className="p-2 rounded-md bg-slate-200 dark:bg-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors"
+              aria-label="Share title"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+              </svg>
+            </button>
             <button
               onClick={() => setIsEditing(true)}
               className="p-2 rounded-md bg-slate-200 dark:bg-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors"

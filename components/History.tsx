@@ -1,10 +1,6 @@
 import React from 'react';
 import HistoryItem from './HistoryItem';
-
-interface ChosenTitle {
-  id: string;
-  text: string;
-}
+import { ChosenTitle } from '../App';
 
 interface HistoryProps {
   chosenTitles: ChosenTitle[];
@@ -13,14 +9,32 @@ interface HistoryProps {
   onDeleteTitle: (id: string) => void;
   searchTerm: string;
   onSearchChange: (term: string) => void;
+  onShare: (text: string) => void;
+  onShareAll: () => void;
 }
 
-const History: React.FC<HistoryProps> = ({ chosenTitles, allChosenTitlesCount, onUpdateTitle, onDeleteTitle, searchTerm, onSearchChange }) => {
+const History: React.FC<HistoryProps> = ({ chosenTitles, allChosenTitlesCount, onUpdateTitle, onDeleteTitle, searchTerm, onSearchChange, onShare, onShareAll }) => {
   const showSearch = allChosenTitlesCount > 0;
 
   return (
     <div className="mt-8">
-      <h2 className="text-2xl font-bold text-center mb-6 text-slate-800 dark:text-slate-200">Your Chosen Titles</h2>
+      <div className="max-w-3xl mx-auto mb-6">
+        <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-200">Your Chosen Titles</h2>
+            {allChosenTitlesCount > 0 && (
+                <button
+                    onClick={onShareAll}
+                    className="flex items-center gap-2 text-sm font-semibold rounded-md py-2 px-4 transition-colors duration-200 bg-slate-200 hover:bg-slate-300 text-slate-700 dark:bg-slate-600 dark:hover:bg-slate-500 dark:text-slate-200"
+                    aria-label="Share all chosen titles"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+                    </svg>
+                    Share All
+                </button>
+            )}
+        </div>
+      </div>
       
       {showSearch && (
         <div className="max-w-3xl mx-auto mb-6">
@@ -42,12 +56,14 @@ const History: React.FC<HistoryProps> = ({ chosenTitles, allChosenTitlesCount, o
         </div>
       ) : chosenTitles.length > 0 ? (
         <div className="space-y-4 max-w-3xl mx-auto">
-          {chosenTitles.slice().reverse().map(item => (
+          {chosenTitles.slice().reverse().map((item, index) => (
             <HistoryItem
               key={item.id}
               item={item}
+              index={index}
               onUpdate={onUpdateTitle}
               onDelete={onDeleteTitle}
+              onShare={() => onShare(item.title)}
             />
           ))}
         </div>

@@ -16,10 +16,10 @@
     <script>
       // This configures Tailwind CSS to use the 'class' strategy for dark mode.
       // It must be placed BEFORE the main Tailwind script.
-      // We initialize the `tailwind` object here to avoid a ReferenceError.
-      window.tailwind = {
-        config: {
-          darkMode: 'class',
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {}
         }
       }
     </script>
