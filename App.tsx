@@ -6,6 +6,7 @@ import TitleCard from './components/TitleCard';
 import ThemeToggle from './components/ThemeToggle';
 import Tabs from './components/Tabs';
 import History from './components/History';
+import Help from './components/Help';
 
 // Define a type for our chosen titles
 export interface ChosenTitle extends TitleResponse {
@@ -184,6 +185,7 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans transition-colors duration-300">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <ThemeToggle theme={theme} setTheme={setTheme} />
+        <Help />
         <Header />
         <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
         
