@@ -183,9 +183,11 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans transition-colors duration-300">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <ThemeToggle theme={theme} setTheme={setTheme} />
-        <Help />
+      <div className="container mx-auto px-4 py-8 max-w-4xl relative">
+        <div className="absolute top-6 right-6 flex items-center gap-4 z-10">
+            <Help />
+            <ThemeToggle theme={theme} setTheme={setTheme} />
+        </div>
         <Header />
         <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
         
